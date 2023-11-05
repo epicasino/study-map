@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model user {
   id        Int      @id @default(autoincrement())
   username  String   @unique
   password  String
@@ -18,20 +18,20 @@ model User {
   bio       String?  @db.VarChar(500)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  reviews   Review[]
+  reviews   review[]
 }
 
-model Location {
+model location {
   id        Int      @id @default(autoincrement())
   placeName String
   address   String   @unique
-  rating    Int
+  rating    Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  reviews   Review[]
+  reviews   review[]
 }
 
-model Review {
+model review {
   id         Int      @id @default(autoincrement())
   rating     Int
   title      String   @db.VarChar(100)
@@ -40,6 +40,6 @@ model Review {
   locationId Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  User       User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  Location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user       user     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  pocation   location @relation(fields: [locationId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
