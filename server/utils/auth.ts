@@ -15,14 +15,14 @@ export function authMiddleware(req: any, res: any, next: NextFunction) {
     }
     jwt.verify(token, secret, { maxAge: expiration }, (err, user) => {
       if (err) {
-        return res.status(403).status({ message: 'Error 403: Token Invalid' });
+        return res.status(403).json({ message: 'Error 403: Token Invalid' });
       }
 
       req.user = user;
       next();
     });
   } else {
-    return res.status(401).json({ message: 'No Token!' });
+    return res.status(401).json({ message: 'Error 401: No Token!' });
   }
 }
 
