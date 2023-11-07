@@ -19,18 +19,19 @@ router.get('/', async (req, res) => {
 
       const location = await prisma.location.findFirst({
         where: { id: parseInt(locationId) },
+        include: { reviews: true },
       });
       if (!location) {
         return res.status(404).json({ message: '404: Not Found' });
       }
 
-      return res.status(200).json(location);
+      return res.status(200).json({ location });
     } catch (err) {
       console.log(err);
       return res.status(400).json(err);
     }
   }
-  const locations = await prisma.location.findMany({});
+  const locations = await prisma.location.findMany();
   return res.status(200).json(locations);
 });
 
