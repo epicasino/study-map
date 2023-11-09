@@ -10,6 +10,22 @@ const hashPass = (password: string) => {
 
 const router = express.Router();
 
+router.get('/me', authMiddleware, async (req: any, res) => {
+  try {
+    const userMe = await prisma.user.findFirst({
+      where: { id: req.user.data.id },
+      select: { id: true, username: true, bio: true, reviews: true },
+    });
+    if (!userMe) {
+      return res.status(404).json({ message: '404: User Not Found' });
+    }
+    res.status(200).json(userMe);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 router.post('/register', async (req, res) => {
   try {
     const password = hashPass(req.body.password);
